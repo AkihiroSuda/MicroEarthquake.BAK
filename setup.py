@@ -1,0 +1,30 @@
+from distutils.core import setup
+setup(
+    name='microearthquake',
+    packages=['microearthquake'],
+    version='0.0.1',
+    description='MicroEarthquake: process scheduling fuzzer',
+    author='Akihiro Suda',
+    author_email='suda.akihiro@lab.ntt.co.jp',
+    url='https://github.com/AkihiroSuda/earthquake-p',
+    download_url='https://github.com/AkihiroSuda/MicroEarthquake/tarball/v0.0.1',
+    license='Apache License 2.0',
+    scripts=['bin/microearthquake'],
+    setup_requires=['cffi>=1.0.0'],
+    cffi_modules=['native_build.py:ffi'],
+    install_requires=[
+        'cffi>=1.0.0',
+        'colorama',
+        'numpy',
+        'python-prctl',
+        'psutil',
+    ],
+    keywords=['fuzz', 'debug', 'non-determinism'],
+    classifiers=[
+        'License :: OSI Approved :: Apache Software License',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
+        'Topic :: System :: Operating System Kernels :: Linux',
+    ],
+)
