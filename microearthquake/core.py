@@ -1,5 +1,6 @@
 import colorama
 import os
+import multiprocessing
 import numpy as np
 import numpy.random
 import random
@@ -12,7 +13,7 @@ import microearthquake._native as _native
 LOG = microearthquake.LOG.getChild(__name__)
 
 BASE = 1e6
-R = 0.9
+R = 1.0
 
 
 class MicroEarthquake(object):
@@ -34,6 +35,9 @@ class MicroEarthquake(object):
         self.interval = interval
         self.probability = probability
         self.dry_run = dry_run
+
+        # others
+        self.cpu_count = multiprocessing.cpu_count()
 
     def _apply_sched(self, pid, runtime, deadline, period):
         """
@@ -67,23 +71,35 @@ class MicroEarthquake(object):
         """
         list of pid -> list of (pid, runtime, deadline, period)
         TODO: check sched_rt_{runtime,period}_us (by default: 0.95e6, 1e6)
+        TODO: anti-aging
         """
         l = []
         ratios = [f for f in np.random.dirichlet(
             np.ones(len(pids)), size=1)[0]]
         for i, pid in enumerate(pids):
-            runtime = int(BASE * ratios[i] * R)
+            runtime = int(BASE * ratios[i] * R * self.cpu_count)
+            deadline = int(BASE)
+            period = deadline
+            l.append((pid, runtime, deadline, period))
+        return l
+
+    def _choose_scheds_fair(self, pids):
+        l = []
+        for i, pid in enumerate(pids):
+            runtime = int(BASE / len(pids) * 0.95 * self.cpu_count)
             deadline = int(BASE)
             period = deadline
             l.append((pid, runtime, deadline, period))
         return l
 
     def step(self):
+        # nop in 1.0 - prob
         if not Util.probab(self.probability):
-            # nop in 1.0 - prob
             return
 
         pids = Util.get_all_pids_under(self.root_pid)
+        random.shuffle(pids)
+
         scheds = self._choose_scheds(pids)
 
         applied_count = 0
@@ -93,8 +109,8 @@ class MicroEarthquake(object):
                 applied_count += 1
 
         LOG.info(colorama.Back.GREEN + colorama.Fore.WHITE +
-                 'Applied: %d of %d' + colorama.Style.RESET_ALL,
-                 applied_count, len(scheds))
+                 'Applied: %d of %d, #PID=%d' + colorama.Style.RESET_ALL,
+                 applied_count, len(scheds), len(pids))
         time.sleep(self.interval)
 
     def run(self):

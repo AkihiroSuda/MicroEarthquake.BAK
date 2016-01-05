@@ -3,6 +3,10 @@
 MicroEarthquake reproduces flaky bugs by fuzzing process scheduling with [`sched_setattr(2)`](http://man7.org/linux/man-pages/man2/sched_setattr.2.html).
 
 
+## Build
+
+    $ (cd microearthquake; python3 native_build.py)
+
 ## Usage
 On Terminal 1:
 
@@ -10,7 +14,7 @@ On Terminal 1:
 
 On Terminal 2:
 
-    $ ./bin/microearthquake pid $TERMINAL1_BASH_PID
+    $ ./bin/microearthquake pid $TERMINAL1_MVN_PID
 
 Notes:
 
@@ -36,4 +40,9 @@ __We still need much more improvement.__
 MicroEarthquake is planned to be rewritten in Go and merged to Earthquake;
 
 Even after that, MicroEarthquake may continue as a lightweight version of Earthquake.
+
+
+## Known Limitation
+After running MicroEarthquake many times, `sched_setattr(2)` can fail with `EBUSY`.
+This seems to be a bug of kernel; I'm looking into this.
 

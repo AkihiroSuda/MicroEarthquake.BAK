@@ -63,3 +63,9 @@ class Util:
             lwp_pids.extend(cls.get_lwp_pids_under(p))
         union = sorted(list(set(proc_pids).union(lwp_pids)))
         return union
+
+    @classmethod
+    def apply_default_sched(cls, pid, prio=0):
+        # attention: http://permalink.gmane.org/gmane.linux.kernel/1779369
+        param = os.sched_param(prio)
+        os.sched_setscheduler(pid, os.SCHED_OTHER, param)
