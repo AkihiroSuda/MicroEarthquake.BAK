@@ -32,6 +32,11 @@ See [`sched-deadline.txt`](https://www.kernel.org/doc/Documentation/scheduler/sc
 
 __We still need much more improvement.__
 
+## Reproduced Bugs
+ 
+ * YARN-{[1978](https://issues.apache.org/jira/browse/YARN-1978), [4168](https://issues.apache.org/jira/browse/YARN-4168), [4543](https://issues.apache.org/jira/browse/YARN-4543), [4548](https://issues.apache.org/jira/browse/YARN-4548), [4556](https://issues.apache.org/jira/browse/YARN-4556)}
+ * etcd {[#4006](https://github.com/coreos/etcd/pull/4006), [#4039](https://github.com/coreos/etcd/issues/4039)}
+ * ..
 
 ## Related Project
 
