@@ -38,6 +38,10 @@ __We still need much more improvement.__
  * etcd {[#4006](https://github.com/coreos/etcd/pull/4006), [#4039](https://github.com/coreos/etcd/issues/4039)}
  * ..
 
+## Talks
+
+ * [FOSDEM](https://fosdem.org/2016/schedule/event/nondeterminism_in_hadoop/) (January 30-31, 2016, Brussels)
+
 ## Related Project
 
  * [Earthquake: a programmable fuzzy scheduler for testing distributed systems](https://github.com/osrg/earthquake)
